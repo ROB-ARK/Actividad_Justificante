@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>UTXJ - Control de Justificantes</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="header-utxj">
+    <h1>Universidad Tecnologica de Xicotepec de Juarez</h1>
+    <p>Sistema de Control y Validacion de Justificantes Academicos</p>
+  </div>
+  <div class="container" style="max-width: 450px;">
+    <div class="card" id="form-login">
+      <h2>Iniciar Sesion</h2>
+      <div class="form-group">
+        <label>Correo Institucional</label>
+        <input type="email" id="login-email" placeholder="usuario@utxj.edu.mx">
+      </div>
+      <div class="form-group">
+        <label>Contrasena</label>
+        <input type="password" id="login-password">
+      </div>
+      <button onclick="login()" style="width: 100%;">Ingresar</button>
+      <p style="text-align: center; margin-top: 1rem;"><a href="#" onclick="toggleAuth(true)">¿No tienes cuenta? Registrate aqui</a></p>
+    </div>
+    <div class="card" id="form-registro" style="display: none;">
+      <h2>Registro de Usuario</h2>
+      <div class="form-group">
+        <label>Rol en el Sistema</label>
+        <select id="reg-rol">
+          <option value="1">Alumno</option>
+          <option value="2">Tutor de Grupo (Maestro)</option>
+          <option value="3">Direccion de Carrera</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Matricula / ID</label><input type="text" id="reg-matricula" placeholder="ej. 240763"></div>
+      <div class="form-group"><label>Nombre(s)</label><input type="text" id="reg-nombre"></div>
+      <div class="form-group"><label>Apellidos</label><input type="text" id="reg-apellidos"></div>
+      <div class="form-group"><label>Correo</label><input type="email" id="reg-email"></div>
+      <div class="form-group"><label>Contrasena</label><input type="password" id="reg-password"></div>
+      <div class="form-group"><label>Grado y Grupo (Solo alumnos)</label><input type="text" id="reg-grado"></div>
+      <div class="form-group"><label>Nombre del Padre, Madre o Tutor(a) Legal</label><input type="text" id="reg-padre"></div>
+      <button onclick="registro()" style="width: 100%;">Crear Cuenta</button>
+      <p style="text-align: center; margin-top: 1rem;"><a href="#" onclick="toggleAuth(false)">Volver al Login</a></p>
+    </div>
+  </div>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

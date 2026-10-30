@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Alumno - UTXJ</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="header-utxj">
+    <h1>Portal del Estudiante UTXJ</h1>
+    <p>Solicitud y Seguimiento de Justificantes</p>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>Nueva Solicitud de Justificante</h2>
+      <form id="form-solicitud">
+        <div class="form-group"><label>Fecha(s) de Falta(s)</label><input type="text" id="fechas" placeholder="ej. 26 y 27 de Octubre de 2026" required></div>
+        <div class="form-group"><label>Caso Critico</label><select id="caso_critico"><option value="NO">NO</option><option value="SI">SI</option></select></div>
+        <div class="form-group"><label>Materias Afectadas</label><textarea id="materias" rows="2" required></textarea></div>
+        <div class="form-group"><label>Motivo de la Falta</label><textarea id="motivo" rows="3" required></textarea></div>
+        <div class="form-group"><label>Subir Receta Médica</label><input type="file" id="evidencia" accept="image/*,application/pdf" required></div>
+        <button type="button" onclick="enviarSolicitud()">Enviar a Revisión</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Mis Justificantes Solicitados</h2>
+      <div id="historial-lista"></div>
+    </div>
+  </div>
+
+  <div id="seccion-impresion" style="display: none;">
+    <!-- ORIGINAL -->
+    <div class="formato-utxj">
+      <div class="header-print">
+        <div style="display: flex; align-items: center;">
+          <div class="logo-text">UTXJ</div>
+          <div class="logo-sub">UNIVERSIDAD<br>TECNOLÓGICA DE<br>XICOTEPEC DE JUÁREZ</div>
+        </div>
+        <div class="titulo-print">
+          <h2>Universidad Tecnológica de Xicotepec de Juárez</h2>
+          <h3>JUSTIFICANTE</h3>
+        </div>
+        <div class="folio-box">
+          <table><tr><th class="bg-gray text-center" style="width:40%">FOLIO</th><td id="pdf-folio-1" class="text-center font-bold" style="width:60%"></td></tr></table>
+        </div>
+      </div>
+      <table>
+        <tr><th class="bg-gray w-20">NOMBRE DEL ESTUDIANTE</th><td colspan="3" id="pdf-alumno-1" class="font-bold"></td></tr>
+        <tr><th class="bg-gray w-20">CARRERA</th><td class="w-30 text-center">ITIID</td><th class="bg-gray w-20">GRADO Y GRUPO</th><td class="w-30 text-center" id="pdf-grado-1"></td></tr>
+        <tr><th class="bg-gray w-20">FECHA(S)</th><td class="w-30 text-center" id="pdf-fechas-1"></td><th class="bg-gray w-20">CASO CRÍTICO (SI/NO)</th><td class="w-30 text-center" id="pdf-critico-1"></td></tr>
+      </table>
+      <table><tr><th class="bg-gray text-center">MATERIAS AFECTADAS DURANTE LA(S) FALTA(S)</th></tr><tr><td class="h-40" id="pdf-materias-1"></td></tr></table>
+      <table><tr><th class="bg-gray text-center">MOTIVO</th></tr><tr><td class="h-40" id="pdf-motivo-1"></td></tr></table>
+      <table><tr><th class="bg-gray text-center">DOCUMENTO COMPROBATORIO</th></tr><tr><td class="text-center font-bold">RECETA MÉDICA</td></tr></table>
+      <table>
+        <tr><th class="bg-gray w-70 text-center">NOMBRE Y FIRMA DEL PADRE, MADRE O TUTOR(A)</th><th class="bg-gray w-30 text-center">SELLO</th></tr>
+        <tr>
+          <td class="h-40 text-center align-bottom firma-sello" id="pdf-padre-1"></td>
+          <td rowspan="5" class="text-center align-middle">
+            <div class="sello-oficial">VALIDADO<br>DIRECCIÓN DE CARRERA<br>UTXJ 2026</div>
+          </td>
+        </tr>
+        <tr><th class="bg-gray text-center">NOMBRE Y FIRMA DEL TUTOR(A) EDUCATIVO</th></tr>
+        <tr><td class="text-center h-30 align-bottom font-bold firma-sello">Mti. Ricardo Luna Santos</td></tr>
+        <tr><th class="bg-gray text-center">NOMBRE Y FIRMA DEL DIRECTOR (A) DE CARRERA</th></tr>
+        <tr><td class="text-center h-30 align-bottom font-bold firma-sello">Mtra. Altagracia Carrillo Parra</td></tr>
+      </table>
+      <div class="footer-nota">NOTA: ESTE DOCUMENTO NO ES VALIDO SI PRESENTA BORRADURAS, TACHADURAS O ENMENDADURAS. VIGENCIA DE 3 DIAS HABILES A PARTIR DE SU FECHA DE EMISION.</div>
+    </div>
+    <br><br>
+    <!-- COPIA -->
+    <div class="formato-utxj">
+      <div class="header-print">
+        <div style="display: flex; align-items: center;">
+          <div class="logo-text">UTXJ</div>
+          <div class="logo-sub">UNIVERSIDAD<br>TECNOLÓGICA DE<br>XICOTEPEC DE JUÁREZ</div>
+        </div>
+        <div class="titulo-print">
+          <h2>Universidad Tecnológica de Xicotepec de Juárez</h2>
+          <h3>JUSTIFICANTE</h3>
+        </div>
+        <div class="folio-box">
+          <table><tr><th class="bg-gray text-center" style="width:40%">FOLIO</th><td id="pdf-folio-2" class="text-center font-bold" style="width:60%"></td></tr></table>
+        </div>
+      </div>
+      <table>
+        <tr><th class="bg-gray w-20">NOMBRE DEL ESTUDIANTE</th><td colspan="3" id="pdf-alumno-2" class="font-bold"></td></tr>
+        <tr><th class="bg-gray w-20">CARRERA</th><td class="w-30 text-center">ITIID</td><th class="bg-gray w-20">GRADO Y GRUPO</th><td class="w-30 text-center" id="pdf-grado-2"></td></tr>
+        <tr><th class="bg-gray w-20">FECHA(S)</th><td class="w-30 text-center" id="pdf-fechas-2"></td><th class="bg-gray w-20">CASO CRÍTICO (SI/NO)</th><td class="w-30 text-center" id="pdf-critico-2"></td></tr>
+      </table>
+      <table><tr><th class="bg-gray text-center">MATERIAS AFECTADAS DURANTE LA(S) FALTA(S)</th></tr><tr><td class="h-40" id="pdf-materias-2"></td></tr></table>
+      <table><tr><th class="bg-gray text-center">MOTIVO</th></tr><tr><td class="h-40" id="pdf-motivo-2"></td></tr></table>
+      <table><tr><th class="bg-gray text-center">DOCUMENTO COMPROBATORIO</th></tr><tr><td class="text-center font-bold">RECETA MÉDICA</td></tr></table>
+      <table>
+        <tr><th class="bg-gray w-70 text-center">NOMBRE Y FIRMA DEL PADRE, MADRE O TUTOR(A)</th><th class="bg-gray w-30 text-center">SELLO</th></tr>
+        <tr>
+          <td class="h-40 text-center align-bottom firma-sello" id="pdf-padre-2"></td>
+          <td rowspan="5" class="text-center align-middle">
+            <div class="sello-oficial">VALIDADO<br>DIRECCIÓN DE CARRERA<br>UTXJ 2026</div>
+          </td>
+        </tr>
+        <tr><th class="bg-gray text-center">NOMBRE Y FIRMA DEL TUTOR(A) EDUCATIVO</th></tr>
+        <tr><td class="text-center h-30 align-bottom font-bold firma-sello">Mti. Ricardo Luna Santos</td></tr>
+        <tr><th class="bg-gray text-center">NOMBRE Y FIRMA DEL DIRECTOR (A) DE CARRERA</th></tr>
+        <tr><td class="text-center h-30 align-bottom font-bold firma-sello">Mtra. Altagracia Carrillo Parra</td></tr>
+      </table>
+      <div class="footer-nota">NOTA: ESTE DOCUMENTO NO ES VALIDO SI PRESENTA BORRADURAS, TACHADURAS O ENMENDADURAS. VIGENCIA DE 3 DIAS HABILES A PARTIR DE SU FECHA DE EMISION.</div>
+    </div>
+  </div>
+  <script src="/js/alumno.js"></script>
+</body>
+</html>

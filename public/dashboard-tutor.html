@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Maestro Tutor - UTXJ</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="header-utxj">
+    <h1>Portal del Maestro (Tutor de Grupo)</h1>
+    <p>Revision de Solicitudes de Justificante</p>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>Solicitudes Pendientes de Revision</h2>
+      <div id="pendientes-tutor"></div>
+    </div>
+  </div>
+  <script>
+    const token = localStorage.getItem('token');
+    async function cargarPendientes() {
+      const res = await fetch('/api/justificantes/tutor/pendientes', { headers: { 'Authorization': `Bearer ${token}` } });
+      const data = await res.json();
+      const cont = document.getElementById('pendientes-tutor');
+      cont.innerHTML = '';
+      if (data.length === 0) { cont.innerHTML = '<p>No hay solicitudes pendientes.</p>'; return; }
+      data.forEach(j => {
+        cont.innerHTML += `
+          <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+            <h3>Alumno: ${j.Alumno?.nombre} ${j.Alumno?.apellidos} (${j.Alumno?.grado_grupo})</h3>
+            <p><b>Fechas:</b> ${j.fechas_faltas}</p>
+            <p><b>Evidencia:</b> <a href="${j.documento_comprobatorio_url}" target="_blank">Ver Receta</a></p>
+            <button onclick="dictaminar(${j.id_justificante}, true)">Aprobar a Direccion</button>
+            <button onclick="dictaminar(${j.id_justificante}, false)" style="background-color: #ef4444; color: white;">Rechazar</button>
+          </div>
+        `;
+      });
+    }
+    async function dictaminar(id, aprobar) {
+      let motivo_rechazo = '';
+      if (!aprobar) { motivo_rechazo = prompt('Motivo del rechazo:'); if (!motivo_rechazo) return; }
+      const res = await fetch(`/api/justificantes/tutor/dictamen/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ aprobar, motivo_rechazo })
+      });
+      if (res.ok) { alert('Dictamen guardado'); cargarPendientes(); }
+    }
+    cargarPendientes();
+  </script>
+</body>
+</html>
